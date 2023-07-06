@@ -4,15 +4,16 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.karaban.shippingservice.model.PromoSign;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "shipping")
+@Table(name = "actuals")
 @Data
-public class Actuals {
+public class Actual {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +21,15 @@ public class Actuals {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chain_name")
-    @JoinColumn(name = "CH3_ship_to_code")
-    private Customers customers;
+    @JoinColumns({
+            @JoinColumn(name="CH3_ship_to_code", referencedColumnName="CH3_ship_to_code"),
+            @JoinColumn(name="chain_name", referencedColumnName="chain_name")
+    })
+    private Customer customer;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "material_no")
-    private Products products;
+    private Product product;
 
     @Column(name = "units")
     private Long units;
@@ -37,8 +40,8 @@ public class Actuals {
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "promo")
-    private String promo;
+    @Column(name = "promo_sign")
+    private PromoSign promoSign;
 
     @CreationTimestamp
     @Column(name = "created_at")
