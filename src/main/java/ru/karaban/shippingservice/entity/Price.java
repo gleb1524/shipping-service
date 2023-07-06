@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.karaban.shippingservice.entity.key.PriceId;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,18 +14,25 @@ import java.time.LocalDateTime;
 @Data
 public class Price {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+//    @Id
+//    @Column(name = "chain")
+//    private String chainName;
+//
+//    @Id
+//    @Column(name = "material_no")
+//    private Long materialNo;
+    @EmbeddedId
+    private PriceId priceId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chain_name", referencedColumnName="chain_name")
-    private Customer customer;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "material_no")
-    private Product product;
+//    @MapsId("materialNo")
+//    @OneToOne
+//    private Product product;
+//
+//
+//
+//    @JoinColumn(name = "chain_name", referencedColumnName = "chain_name")
+//    @OneToOne
+//    private Customer customer;
 
     @Column(name = "regular_price_per_unit")
     private BigDecimal pricePerUnit;
