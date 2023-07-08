@@ -1,3 +1,6 @@
+server:
+  servlet:
+    context-path: /ship
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
@@ -10,3 +13,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  task:
+   execution:
+    pool:
+      core-size: 8
+      max-size: 16
+      keep-alive: 60s
+
+shipping:
+  batchSize: 700
+  filePath: "xlsx/file.xlsx"
