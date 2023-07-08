@@ -8,6 +8,9 @@ import ru.karaban.shippingservice.entity.Product;
 import ru.karaban.shippingservice.repository.ProductRepository;
 import ru.karaban.shippingservice.service.ExelService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ExelServiceProduct implements ExelService {
@@ -15,8 +18,9 @@ public class ExelServiceProduct implements ExelService {
     private final ProductRepository productRepository;
 
     @Override
-    public void saveEntityFromExel(XSSFSheet sheet, int startRow, int endRow) {
+    public List<Product> saveEntityFromExel(XSSFSheet sheet, int startRow, int endRow) {
 
+        List<Product> processedProducts = new ArrayList<>();
         for (int i = startRow; i < endRow; i++) {
             Row row = sheet.getRow(i);
 
@@ -29,8 +33,8 @@ public class ExelServiceProduct implements ExelService {
                     .categoryCode(Long.valueOf(row.getCell(2).getStringCellValue()))
                     .brand(row.getCell(3).getStringCellValue())
                     .build();
-
-            productRepository.save(product);
+            processedProducts.add(product);
         }
+        return productRepository.saveAll(processedProducts);
     }
 }

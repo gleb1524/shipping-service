@@ -5,20 +5,23 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.stereotype.Service;
 import ru.karaban.shippingservice.entity.Price;
-import ru.karaban.shippingservice.entity.Product;
 import ru.karaban.shippingservice.entity.key.PriceId;
 import ru.karaban.shippingservice.repository.PriceRepository;
 import ru.karaban.shippingservice.service.ExelService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ExelServicePrice implements ExelService {
+public class ExelServicePrice implements ExelService<Price> {
 
     private final PriceRepository priceRepository;
     @Override
-    public void saveEntityFromExel(XSSFSheet sheet, int startRow, int endRow) {
+    public List<Price> saveEntityFromExel(XSSFSheet sheet, int startRow, int endRow) {
+
+        List<Price> processedPrice = new ArrayList<>();
         for (int i = startRow; i < endRow; i++) {
             Row row = sheet.getRow(i);
 
@@ -32,7 +35,8 @@ public class ExelServicePrice implements ExelService {
                             .build())
                     .pricePerUnit(BigDecimal.valueOf(row.getCell(2).getNumericCellValue()))
                     .build();
-            priceRepository.save(price);
+            processedPrice.add(price);
         }
+        return priceRepository.saveAll(processedPrice);
     }
 }

@@ -1,8 +1,12 @@
 package ru.karaban.shippingservice.service;
 
+
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-public interface ExelService {
 
-    void saveEntityFromExel(XSSFSheet sheet, int startRow, int endRow);
+import java.util.List;
+
+public interface ExelService<T> {
+
+    List<T> saveEntityFromExel(XSSFSheet sheet, int startRow, int endRow);
 }
