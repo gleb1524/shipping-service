@@ -22,4 +22,4 @@ spring:
 
 shipping:
   batchSize: 700
-  filePath: "xlsx/file.xlsx"
+  filePath: xlsx/file.xlsx

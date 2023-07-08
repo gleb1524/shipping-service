@@ -22,7 +22,7 @@ public class ImportExelDataService implements ImportDataService {
 
     @Value("${shipping.batchSize}")
     private Integer batchSize;
-    @Value("${shipping.filePath")
+    @Value("${shipping.filePath}")
     private String filePath;
 
     @Override
@@ -37,7 +37,7 @@ public class ImportExelDataService implements ImportDataService {
 
     @Override
     @SneakyThrows
-    @PostConstruct
+    @PostProxy
     public void importData() {
         InputStream fileInputStream = this.getClass().getClassLoader().getResourceAsStream(filePath); //TODO дописать исключения
         if(fileInputStream != null){

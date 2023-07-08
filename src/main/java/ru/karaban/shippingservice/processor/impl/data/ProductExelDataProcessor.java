@@ -1,4 +1,4 @@
-package ru.karaban.shippingservice.processor.impl;
+package ru.karaban.shippingservice.processor.impl.data;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -25,6 +25,7 @@ public class ProductExelDataProcessor implements ExelDataProcessor {
     @Override
     @SneakyThrows
     public void process(XSSFSheet sheet, int batchSize) {
+
         int start = 0;
         List<Product> processedRow = new ArrayList<>();
         do {
@@ -40,4 +41,5 @@ public class ProductExelDataProcessor implements ExelDataProcessor {
     public boolean checkType(final XSSFSheet sheet) {
         return PRODUCT_SHEET.equals(sheet.getSheetName());
     }
+
 }
