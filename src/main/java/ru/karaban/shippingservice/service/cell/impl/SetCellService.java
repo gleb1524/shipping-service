@@ -1,22 +1,22 @@
-package ru.karaban.shippingservice.processor.impl.cell;
+package ru.karaban.shippingservice.service.cell.impl;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.stereotype.Component;
-import ru.karaban.shippingservice.processor.CellTypeProcessor;
+import ru.karaban.shippingservice.service.cell.CellTypeService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Component
-public class SetCellProcessor {
-    public Map<Integer, Object> setCell(Row row, List<CellTypeProcessor> cellTypeProcessors){
+public class SetCellService {
+    public Map<Integer, Object> setCell(Row row, List<CellTypeService> cellTypeServices) {
         Map<Integer, Object> cellValues = new HashMap<>();
         for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
-            for (CellTypeProcessor typeProcessor : cellTypeProcessors) {
+            for (CellTypeService typeProcessor : cellTypeServices) {
                 Cell cell = row.getCell(j);
-                if (cell!=null && typeProcessor.checkType(cell)) {
+                if (cell != null && typeProcessor.checkType(cell)) {
                     cellValues.put(j, typeProcessor.getCellValue(cell));
                 }
             }

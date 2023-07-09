@@ -26,7 +26,7 @@ public class PostProxyContextListener implements ApplicationListener<ContextRefr
         for (String name : names) {
             BeanDefinition beanDefinition = factory.getBeanDefinition(name);
             String originalClassName = beanDefinition.getBeanClassName();
-            if(originalClassName!=null){
+            if (originalClassName != null) {
                 Class<?> originalClass = Class.forName(originalClassName);
                 Method[] methods = originalClass.getMethods();
                 for (Method method : methods) {

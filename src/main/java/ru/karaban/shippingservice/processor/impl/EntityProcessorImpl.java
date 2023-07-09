@@ -6,10 +6,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.stereotype.Component;
 import ru.karaban.shippingservice.builder.ExelToEntityBuilder;
-import ru.karaban.shippingservice.entity.Product;
-import ru.karaban.shippingservice.processor.CellTypeProcessor;
-import ru.karaban.shippingservice.processor.EntityProcessed;
-import ru.karaban.shippingservice.processor.impl.cell.SetCellProcessor;
+import ru.karaban.shippingservice.processor.EntityProcessor;
+import ru.karaban.shippingservice.service.cell.CellTypeService;
+import ru.karaban.shippingservice.service.cell.impl.SetCellService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +16,10 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class EntityProcessedImpl<T> implements EntityProcessed {
+public class EntityProcessorImpl<T> implements EntityProcessor {
 
-    private final List<CellTypeProcessor> cellTypeProcessors;
-    private final SetCellProcessor setCellProcessor;
+    private final List<CellTypeService> cellTypeServices;
+    private final SetCellService setCellService;
 
     @Override
     public List<T> entityProcessed(XSSFSheet sheet, int startRow, int endRow, ExelToEntityBuilder exelToEntityBuilder) {
@@ -29,8 +28,8 @@ public class EntityProcessedImpl<T> implements EntityProcessed {
         for (int i = startRow; i < endRow; i++) {
             Row row = sheet.getRow(i);
 
-            if(checkRowIsBlank(row)){
-                cellValues = setCellProcessor.setCell(row, cellTypeProcessors);
+            if (checkRowIsBlank(row)) {
+                cellValues = setCellService.setCell(row, cellTypeServices);
                 processedProducts.add((T) exelToEntityBuilder.building(cellValues));
             }
         }
@@ -39,14 +38,14 @@ public class EntityProcessedImpl<T> implements EntityProcessed {
 
     private boolean checkRowIsBlank(Row row) {
         boolean isBlank = true;
-        if(row == null){
+        if (row == null) {
             return false;
         }
-        if(row.getRowNum() == 0){
+        if (row.getRowNum() == 0) {
             return false;
         }
         for (Cell cell : row) {
-            if(cell == null) {
+            if (cell == null) {
                 isBlank = false;
                 break;
             }

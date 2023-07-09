@@ -24,18 +24,19 @@ public class PriceExelDataProcessor implements ExelDataProcessor {
     private final ExelService exelServicePrice;
 
     private final ThreadPoolTaskExecutor taskExecutor;
+
     @Override
     @SneakyThrows
     public void process(XSSFSheet sheet, int batchSize) {
-            int start = 0;
-            List<Product> processedRow = new ArrayList<>();
-            do {
-                final int startRow = start;
-                final int endRow = start + batchSize;
-                Future<List<Product>> result = taskExecutor.submit(() -> exelServicePrice.saveEntityFromExel(sheet, startRow, endRow));
-                start += batchSize;
-                processedRow.addAll(result.get());
-            } while (start < sheet.getPhysicalNumberOfRows() && processedRow.size() != sheet.getPhysicalNumberOfRows());
+        int start = 0;
+        List<Product> processedRow = new ArrayList<>();
+        do {
+            final int startRow = start;
+            final int endRow = start + batchSize;
+            Future<List<Product>> result = taskExecutor.submit(() -> exelServicePrice.saveEntityFromExel(sheet, startRow, endRow));
+            start += batchSize;
+            processedRow.addAll(result.get());
+        } while (start < sheet.getPhysicalNumberOfRows() && processedRow.size() != sheet.getPhysicalNumberOfRows());
 
     }
 

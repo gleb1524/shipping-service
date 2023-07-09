@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.karaban.shippingservice.builder.ExelToEntityBuilder;
 import ru.karaban.shippingservice.entity.Price;
 import ru.karaban.shippingservice.entity.key.PriceId;
-import ru.karaban.shippingservice.processor.FormatDataExel;
+import ru.karaban.shippingservice.service.infrastructure.FormatDataExel;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -15,12 +15,13 @@ import java.util.Map;
 public class ExelToPriceBuilder implements ExelToEntityBuilder<Price> {
 
     private final FormatDataExel formatDataExel;
+
     @Override
     public Price building(Map<Integer, Object> cellValues) {
         return Price.builder()
                 .priceId(PriceId.builder()
                         .chainName((String) cellValues.get(0))
-                        .materialNo(Long.valueOf(formatDataExel.format ((String) cellValues.get(1))))
+                        .materialNo(Long.valueOf(formatDataExel.format((String) cellValues.get(1))))
                         .build())
                 .pricePerUnit(BigDecimal.valueOf((Long) cellValues.get(2)))
                 .build();

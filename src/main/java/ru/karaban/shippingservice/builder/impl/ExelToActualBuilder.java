@@ -7,10 +7,7 @@ import ru.karaban.shippingservice.entity.Actual;
 import ru.karaban.shippingservice.entity.Customer;
 import ru.karaban.shippingservice.entity.Price;
 import ru.karaban.shippingservice.entity.key.PriceId;
-import ru.karaban.shippingservice.model.PromoSign;
-import ru.karaban.shippingservice.processor.FormatDataExel;
-import ru.karaban.shippingservice.service.CustomerService;
-import ru.karaban.shippingservice.service.PriceService;
+import ru.karaban.shippingservice.service.infrastructure.FormatDataExel;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,39 +17,40 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ExelToActualBuilder implements ExelToEntityBuilder<Actual> {
 
-    private final PriceService priceService;
-    private final CustomerService customerService;
+    //    private final PriceService priceService;
+//    private final CustomerService customerService;
     private final FormatDataExel formatDataExel;
+
     @Override
     public Actual building(Map<Integer, Object> cellValues) {
         BigDecimal actualSales = BigDecimal.valueOf((long) cellValues.get(5));
         Long units = (Long) cellValues.get(4);
         PriceId priceId = PriceId.builder()
                 .chainName((String) cellValues.get(3))
-                .materialNo(Long.valueOf(formatDataExel.format ((String) cellValues.get(1))))
+                .materialNo(Long.valueOf(formatDataExel.format((String) cellValues.get(1))))
                 .build();
-        Price price = priceService.finByPriceId(priceId);
-        Customer customer = customerService.findById(Long.valueOf(formatDataExel.format ((String) cellValues.get(2))));
-        BigDecimal pricePerUnit = price.getPricePerUnit();
-        PromoSign promoSign = checkPromoSign(actualSales, units, pricePerUnit);
+//        Price price = priceService.finByPriceId(priceId);
+//        Customer customer = customerService.findById(Long.valueOf(formatDataExel.format ((String) cellValues.get(2))));
+//        BigDecimal pricePerUnit = price.getPricePerUnit();
+//        PromoSign promoSign = checkPromoSign(actualSales, units, pricePerUnit);
 
-       return Actual.builder()
+        return Actual.builder()
                 .date(LocalDate.parse((String) cellValues.get(0)))
-                .customer(customer)
-                .price(price)
+                .customer(Customer.builder().id(Long.valueOf(formatDataExel.format((String) cellValues.get(2)))).build())
+                .price(Price.builder().priceId(priceId).build())
                 .units(units)
                 .actualSales(actualSales)
-                .promoSign(promoSign)
+//                .promoSign(PromoSign.PROMO)
                 .build();
     }
 
-    private PromoSign checkPromoSign(BigDecimal actualSales,Long units, BigDecimal pricePerUnit) {
-        double actual = actualSales.doubleValue();
-        double price = pricePerUnit.doubleValue();
-        if(actual/units<price) {
-            return PromoSign.PROMO;
-        } else {
-            return PromoSign.REGULAR;
-        }
-    }
+//    private PromoSign checkPromoSign(BigDecimal actualSales,Long units, BigDecimal pricePerUnit) {
+//        double actual = actualSales.doubleValue();
+//        double price = pricePerUnit.doubleValue();
+//        if(actual/units<price) {
+//            return PromoSign.PROMO;
+//        } else {
+//            return PromoSign.REGULAR;
+//        }
+//    }
 }

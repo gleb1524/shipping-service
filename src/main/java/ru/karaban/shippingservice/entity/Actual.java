@@ -1,15 +1,16 @@
 package ru.karaban.shippingservice.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import ru.karaban.shippingservice.model.PromoSign;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "actuals")
@@ -25,13 +26,13 @@ public class Actual {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="CH3_ship_to_code", referencedColumnName="CH3_ship_to_code")
+    @JoinColumn(name = "CH3_ship_to_code", referencedColumnName = "CH3_ship_to_code")
     private Customer customer;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumns({
-            @JoinColumn(name="material_no", referencedColumnName="material_no"),
-            @JoinColumn(name="chain_name", referencedColumnName="chain_name")
+            @JoinColumn(name = "material_no", referencedColumnName = "material_no"),
+            @JoinColumn(name = "chain_name", referencedColumnName = "chain_name")
     })
     private Price price;
 
@@ -45,8 +46,7 @@ public class Actual {
     private LocalDate date;
 
     @Column(name = "promo_sign")
-    @Enumerated(EnumType.STRING)
-    private PromoSign promoSign;
+    private String promoSign;
 
     @CreationTimestamp
     @Column(name = "created_at")

@@ -7,7 +7,7 @@ import ru.karaban.shippingservice.builder.ExelToEntityBuilder;
 import java.util.List;
 
 @Component
-public interface EntityProcessed<T> {
+public interface EntityProcessor<T> {
 
-     List<T> entityProcessed(XSSFSheet sheet, int startRow, int endRow, ExelToEntityBuilder exelToEntityBuilder);
+    List<T> entityProcessed(XSSFSheet sheet, int startRow, int endRow, ExelToEntityBuilder exelToEntityBuilder);
 }

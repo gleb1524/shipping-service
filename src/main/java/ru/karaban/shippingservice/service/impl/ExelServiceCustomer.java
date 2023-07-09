@@ -5,7 +5,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.stereotype.Service;
 import ru.karaban.shippingservice.builder.ExelToEntityBuilder;
 import ru.karaban.shippingservice.entity.Customer;
-import ru.karaban.shippingservice.processor.EntityProcessed;
+import ru.karaban.shippingservice.processor.EntityProcessor;
 import ru.karaban.shippingservice.repository.CustomerRepository;
 import ru.karaban.shippingservice.service.ExelService;
 
@@ -16,11 +16,12 @@ import java.util.List;
 public class ExelServiceCustomer implements ExelService<Customer> {
 
     private final CustomerRepository customerRepository;
-    private final EntityProcessed entityProcessedImpl;
+    private final EntityProcessor entityProcessorImpl;
     private final ExelToEntityBuilder exelToCustomerBuilder;
+
     @Override
     public List<Customer> saveEntityFromExel(XSSFSheet sheet, int startRow, int endRow) {
-        List<Customer> customerList = entityProcessedImpl.entityProcessed(sheet,startRow,endRow, exelToCustomerBuilder);
+        List<Customer> customerList = entityProcessorImpl.entityProcessed(sheet, startRow, endRow, exelToCustomerBuilder);
         return customerRepository.saveAll(customerList);
     }
 }

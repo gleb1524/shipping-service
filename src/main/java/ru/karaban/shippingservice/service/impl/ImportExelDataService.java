@@ -6,11 +6,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.karaban.shippingservice.processor.ExelDataProcessor;
 import ru.karaban.shippingservice.service.ImportDataService;
 
-import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +31,7 @@ public class ImportExelDataService implements ImportDataService {
     @PostProxy
     public void importData() {
         InputStream fileInputStream = this.getClass().getClassLoader().getResourceAsStream(filePath); //TODO дописать исключения
-        if(fileInputStream != null){
+        if (fileInputStream != null) {
             XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
             int numberOfSheets = workbook.getNumberOfSheets();
             Map<String, XSSFSheet> mapSheet = new HashMap<>();

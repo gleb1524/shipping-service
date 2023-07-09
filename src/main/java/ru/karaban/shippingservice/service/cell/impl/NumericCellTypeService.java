@@ -1,12 +1,12 @@
-package ru.karaban.shippingservice.processor.impl.cell;
+package ru.karaban.shippingservice.service.cell.impl;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.springframework.stereotype.Component;
-import ru.karaban.shippingservice.processor.CellTypeProcessor;
+import ru.karaban.shippingservice.service.cell.CellTypeService;
 
 @Component
-public class NumericCellTypeProcessor implements CellTypeProcessor<Long> {
+public class NumericCellTypeService implements CellTypeService<Long> {
     @Override
     public Long getCellValue(Cell cell) {
         return (long) cell.getNumericCellValue();
