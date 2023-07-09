@@ -6,5 +6,4 @@ import java.util.Map;
 public interface ExelToEntityBuilder<T>{
 
     T building(Map<Integer, Object> cellValues);
-    boolean checkType(T t);
 }

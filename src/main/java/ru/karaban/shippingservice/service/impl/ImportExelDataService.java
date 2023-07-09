@@ -12,7 +12,9 @@ import ru.karaban.shippingservice.service.ImportDataService;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Component
@@ -25,15 +27,6 @@ public class ImportExelDataService implements ImportDataService {
     @Value("${shipping.filePath}")
     private String filePath;
 
-    @Override
-    @SneakyThrows
-    public void importDataFromFile(XSSFSheet sheet) {
-        for (ExelDataProcessor processor : processors) {
-            if (processor.checkType(sheet)) {
-                processor.process(sheet, batchSize);
-            }
-        }
-    }
 
     @Override
     @SneakyThrows
@@ -43,12 +36,20 @@ public class ImportExelDataService implements ImportDataService {
         if(fileInputStream != null){
             XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
             int numberOfSheets = workbook.getNumberOfSheets();
+            Map<String, XSSFSheet> mapSheet = new HashMap<>();
             for (int i = 0; i < numberOfSheets; i++) {
                 XSSFSheet sheet = workbook.getSheetAt(i);
-                importDataFromFile(sheet);
+                mapSheet.put(sheet.getSheetName(), sheet);
             }
+            importDataFromSheets(mapSheet);
             fileInputStream.close();
             workbook.close();
+        }
+    }
+
+    private void importDataFromSheets(Map<String, XSSFSheet> mapSheet) {
+        for (ExelDataProcessor processor : processors) {
+            processor.process(mapSheet.get(processor.getType()), batchSize);
         }
     }
 }

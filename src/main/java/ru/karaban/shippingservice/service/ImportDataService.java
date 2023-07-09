@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 public interface ImportDataService {
 
-    void importDataFromFile(XSSFSheet sheet);
 
     void importData();
 }

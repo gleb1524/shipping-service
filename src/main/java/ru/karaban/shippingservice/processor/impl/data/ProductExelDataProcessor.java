@@ -3,6 +3,7 @@ package ru.karaban.shippingservice.processor.impl.data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import ru.karaban.shippingservice.entity.Product;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 @Component
+@Order(1)
 @RequiredArgsConstructor
 public class ProductExelDataProcessor implements ExelDataProcessor {
 
@@ -38,8 +40,7 @@ public class ProductExelDataProcessor implements ExelDataProcessor {
     }
 
     @Override
-    public boolean checkType(final XSSFSheet sheet) {
-        return PRODUCT_SHEET.equals(sheet.getSheetName());
+    public String getType() {
+        return PRODUCT_SHEET;
     }
-
 }

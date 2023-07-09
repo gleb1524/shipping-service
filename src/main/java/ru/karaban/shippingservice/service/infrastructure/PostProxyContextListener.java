@@ -37,7 +37,6 @@ public class PostProxyContextListener implements ApplicationListener<ContextRefr
                     }
                 }
             }
-
         }
 
     }

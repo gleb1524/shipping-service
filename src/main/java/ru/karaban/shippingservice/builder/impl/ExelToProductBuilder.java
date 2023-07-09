@@ -22,9 +22,4 @@ public class ExelToProductBuilder implements ExelToEntityBuilder<Product> {
                 .brand((String) cellValues.get(3))
                 .build();
     }
-
-    @Override
-    public boolean checkType(Product product) {
-        return product.getClass().equals(Product.class);
-    }
 }

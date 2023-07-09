@@ -1,6 +1,7 @@
 package ru.karaban.shippingservice.processor.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.stereotype.Component;
@@ -27,12 +28,29 @@ public class EntityProcessedImpl<T> implements EntityProcessed {
         Map<Integer, Object> cellValues;
         for (int i = startRow; i < endRow; i++) {
             Row row = sheet.getRow(i);
-            if (row == null || row.getRowNum() == 0 || row.getCell(i) == null) {
-                continue;
+
+            if(checkRowIsBlank(row)){
+                cellValues = setCellProcessor.setCell(row, cellTypeProcessors);
+                processedProducts.add((T) exelToEntityBuilder.building(cellValues));
             }
-            cellValues = setCellProcessor.setCell(row, cellTypeProcessors);
-            processedProducts.add((T) exelToEntityBuilder.building(cellValues));
         }
         return processedProducts;
+    }
+
+    private boolean checkRowIsBlank(Row row) {
+        boolean isBlank = true;
+        if(row == null){
+            return false;
+        }
+        if(row.getRowNum() == 0){
+            return false;
+        }
+        for (Cell cell : row) {
+            if(cell == null) {
+                isBlank = false;
+                break;
+            }
+        }
+        return isBlank;
     }
 }

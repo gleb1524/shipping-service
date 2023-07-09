@@ -26,8 +26,4 @@ public class ExelToPriceBuilder implements ExelToEntityBuilder<Price> {
                 .build();
     }
 
-    @Override
-    public boolean checkType(Price price) {
-        return price.getClass().equals(Price.class);
-    }
 }
