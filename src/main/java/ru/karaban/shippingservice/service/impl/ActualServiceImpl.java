@@ -8,40 +8,54 @@ import ru.karaban.shippingservice.entity.key.PriceId;
 import ru.karaban.shippingservice.model.AnalysisModel;
 import ru.karaban.shippingservice.repository.ActualRepository;
 import ru.karaban.shippingservice.service.ActualService;
+import ru.karaban.shippingservice.service.ProductService;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ActualServiceImpl implements ActualService<AnalysisModel, PriceId> {
+public class ActualServiceImpl implements ActualService<PriceId, LocalDate> {
 
     private final ActualRepository actualRepository;
+    private final ProductService productService;
 
     @Override
-    public List<AnalysisModel> getShipByPromo(PriceId priceId) {
+    public AnalysisModel getShipByPromo(PriceId priceId, LocalDate dateStart, LocalDate dateEnd) {
 
-        Price price = Price.builder().priceId(priceId).build();
-        List<Actual> actuals = actualRepository.findAllByPrice(price);
 
-        Long total = (long) actuals.size();
+        List<Actual> actualListByPriceAndDate =
+                actualRepository.findAllByPriceAndDateBetween(Price.builder().priceId(priceId).build(), dateStart, dateEnd);
+        double totalUnit = 0;
+        double promoUnit = 0;
+        double regularUnit = 0;
 
-        Long unitWithPromo = (long) actualRepository.findAllByPriceAndPromoSign(price, "Promo").size();
-
-        Long promoShare = calculatePromoShare(total, unitWithPromo);
-        return actuals.stream().map(a ->
-                AnalysisModel.builder()
-                        .date(a.getDate())
-                        .categoryCode(a.getCustomer().getId())
-                        .units(unitWithPromo)
-                        .chainName(a.getCustomer().getChainName())
-                        .promoShare(promoShare)
-                        .build()
-        ).collect(Collectors.toList());
+        for (Actual actual : actualListByPriceAndDate) {
+            totalUnit += actual.getUnits();
+            if (actual.getPromoSign().equals("Promo")) {
+                promoUnit += actual.getUnits();
+            } else {
+                regularUnit += actual.getUnits();
+            }
+        }
+        Double promoShare = calculatePromoShare(totalUnit, promoUnit);
+        return AnalysisModel.builder()
+                .chainName(priceId.getChainName())
+                .categoryCode(productService.findById(priceId.getMaterialNo()).getCategoryCode())
+                .categoryName(productService.findById(priceId.getMaterialNo()).getBrand())
+                .dateStart(dateStart)
+                .dateEnd(dateEnd)
+                .regularUnits((int) regularUnit)
+                .promoUnits((int) promoUnit)
+                .promoShare(promoShare)
+                .build();
     }
 
-    private Long calculatePromoShare(Long total, Long unitWithPromo) {
-        return unitWithPromo/total;
+    private Double calculatePromoShare(double total, double promoUnit) {
+        double promoShare = 0d;
+        if (total != 0d) {
+            promoShare = promoUnit / total;
+        }
+        return promoShare;
     }
-
 }

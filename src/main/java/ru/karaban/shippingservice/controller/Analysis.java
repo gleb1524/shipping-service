@@ -11,6 +11,8 @@ import ru.karaban.shippingservice.model.ActualMessage;
 import ru.karaban.shippingservice.model.FinanceMessage;
 import ru.karaban.shippingservice.service.ActualService;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/analysis")
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class Analysis {
     @GetMapping
     public ResponseEntity<?> getShipByPromo(@RequestBody ActualMessage message) {
         PriceId priceId = PriceId.builder().chainName(message.getChainName()).materialNo(message.getMaterialNo()).build();
-        return ResponseEntity.ok(actualService.getShipByPromo(priceId)) ;
+        return ResponseEntity.ok(actualService.getShipByPromo(priceId, message.getStart(), message.getEnd())) ;
     }
 
     public void getShipByDays() {

@@ -16,7 +16,10 @@ public class AnalysisModel {
 
     private String chainName;
     private Long categoryCode;
-    private LocalDate date;
-    private Long units;
-    private Long promoShare;
+    private String categoryName;
+    private LocalDate dateStart;
+    private LocalDate dateEnd;
+    private int promoUnits;
+    private int regularUnits;
+    private double promoShare;
 }
