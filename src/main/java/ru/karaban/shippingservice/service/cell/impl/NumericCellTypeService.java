@@ -7,6 +7,7 @@ import ru.karaban.shippingservice.service.cell.CellTypeService;
 
 @Component
 public class NumericCellTypeService implements CellTypeService<Long> {
+
     @Override
     public Long getCellValue(Cell cell) {
         return (long) cell.getNumericCellValue();

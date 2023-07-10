@@ -5,13 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class AnalysisModel {
 
     private String chainName;
@@ -19,7 +18,7 @@ public class AnalysisModel {
     private String categoryName;
     private LocalDate dateStart;
     private LocalDate dateEnd;
-    private int promoUnits;
-    private int regularUnits;
-    private double promoShare;
+    private Double promoUnits;
+    private Double regularUnits;
+    private Double promoShare;
 }

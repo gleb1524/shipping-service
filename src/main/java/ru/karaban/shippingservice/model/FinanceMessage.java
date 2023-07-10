@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class FinanceMessage {
 
-
     private String chainName;
     private Long materialNo;
     private BigDecimal pricePerUnit;

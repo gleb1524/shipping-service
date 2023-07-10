@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-import ru.karaban.shippingservice.service.impl.PostProxy;
+import ru.karaban.shippingservice.annotation.PostProxy;
 
 import java.lang.reflect.Method;
 

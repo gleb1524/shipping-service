@@ -6,6 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ru.karaban.shippingservice.annotation.PostProxy;
 import ru.karaban.shippingservice.processor.ExelDataProcessor;
 import ru.karaban.shippingservice.service.ImportDataService;
 

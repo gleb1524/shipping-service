@@ -11,6 +11,7 @@ import ru.karaban.shippingservice.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
+
     @Override
     public Product findById(Long id) {
         return repository.findById(id).orElseThrow();

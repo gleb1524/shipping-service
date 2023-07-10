@@ -7,6 +7,7 @@ import ru.karaban.shippingservice.service.cell.CellTypeService;
 
 @Component
 public class StringCellTypeService implements CellTypeService<String> {
+
     @Override
     public String getCellValue(Cell cell) {
         return cell.getStringCellValue();

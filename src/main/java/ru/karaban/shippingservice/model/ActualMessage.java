@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @Builder
 @NoArgsConstructor
@@ -17,4 +18,5 @@ public class ActualMessage {
     private Long materialNo;
     private LocalDate start;
     private LocalDate end;
+    private Map<String, Long> priceIds;
 }
