@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.karaban.shippingservice.entity.Actual;
 import ru.karaban.shippingservice.entity.Price;
+import ru.karaban.shippingservice.entity.Product;
 import ru.karaban.shippingservice.entity.key.PriceId;
 import ru.karaban.shippingservice.model.AnalysisModel;
 import ru.karaban.shippingservice.repository.ActualRepository;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,11 +52,16 @@ public class ActualServiceImpl implements ActualService<PriceId, AnalysisModel> 
         List<Actual> allByPriceInOrderByDate =
                 actualRepository.findAllByPriceInOrderByDate(prices);
         Map<String, Double> units = calculateUnitsByPromoSing(allByPriceInOrderByDate);
+        Map<Long, Product> products = new HashMap<>();
+        List<Product> collect = priceIds.stream().map(p -> productService.findById(p.getMaterialNo())).collect(Collectors.toList());
+        for (Product product : collect) {
+            products.put(product.getCode(), product);
+        }
         return allByPriceInOrderByDate.stream().map(actual ->
                 AnalysisModel.builder()
                         .chainName(actual.getPrice().getPriceId().getChainName())
-                        .categoryCode(productService.findById(actual.getPrice().getPriceId().getMaterialNo()).getCategoryCode())
-                        .categoryName(productService.findById(actual.getPrice().getPriceId().getMaterialNo()).getBrand())
+                        .categoryCode(products.get(actual.getPrice().getPriceId().getMaterialNo()).getCategoryCode())
+                        .categoryName(products.get(actual.getPrice().getPriceId().getMaterialNo()).getBrand())
                         .dateStart(actual.getDate())
                         .regularUnits(units.get("regularUnit"))
                         .promoUnits(units.get("promoUnit"))

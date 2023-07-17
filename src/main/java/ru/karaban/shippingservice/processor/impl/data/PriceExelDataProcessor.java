@@ -6,13 +6,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
-import ru.karaban.shippingservice.entity.Product;
+import ru.karaban.shippingservice.entity.Price;
 import ru.karaban.shippingservice.processor.ExelDataProcessor;
+import ru.karaban.shippingservice.processor.impl.Processor;
 import ru.karaban.shippingservice.service.ExelService;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Future;
 
 @Component
 @Order(3)
@@ -20,24 +17,14 @@ import java.util.concurrent.Future;
 public class PriceExelDataProcessor implements ExelDataProcessor {
 
     private static final String PRICE_SHEET = "Price";
-
-    private final ExelService exelServicePrice;
-
+    private final ExelService<Price> exelServicePrice;
     private final ThreadPoolTaskExecutor taskExecutor;
+    private final Processor processor;
 
     @Override
     @SneakyThrows
     public void process(XSSFSheet sheet, int batchSize) {
-        int start = 0;
-        List<Product> processedRow = new ArrayList<>();
-        do {
-            final int startRow = start;
-            final int endRow = start + batchSize;
-            Future<List<Product>> result = taskExecutor.submit(() -> exelServicePrice.saveEntityFromExel(sheet, startRow, endRow));
-            start += batchSize;
-            processedRow.addAll(result.get());
-        } while (start < sheet.getPhysicalNumberOfRows() && processedRow.size() != sheet.getPhysicalNumberOfRows());
-
+        processor.process(sheet, batchSize, taskExecutor, exelServicePrice);
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.karaban.shippingservice.builder.ExelToEntityBuilder;
 import ru.karaban.shippingservice.entity.Price;
 import ru.karaban.shippingservice.processor.EntityProcessor;
+import ru.karaban.shippingservice.processor.impl.EntityProcessorImpl;
 import ru.karaban.shippingservice.repository.PriceRepository;
 import ru.karaban.shippingservice.service.ExelService;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class ExelServicePrice implements ExelService<Price> {
 
     private final PriceRepository priceRepository;
-    private final EntityProcessor entityProcessorImpl;
+    private final EntityProcessorImpl<Price> entityProcessorImpl;
     private final ExelToEntityBuilder exelToPriceBuilder;
 
     @Override
