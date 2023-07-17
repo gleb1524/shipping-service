@@ -17,8 +17,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ExelToActualBuilder implements ExelToEntityBuilder<Actual> {
 
-    //    private final PriceService priceService;
-//    private final CustomerService customerService;
     private final FormatDataExel formatDataExel;
 
     @Override
@@ -29,10 +27,6 @@ public class ExelToActualBuilder implements ExelToEntityBuilder<Actual> {
                 .chainName((String) cellValues.get(3))
                 .materialNo(Long.valueOf(formatDataExel.format((String) cellValues.get(1))))
                 .build();
-//        Price price = priceService.finByPriceId(priceId);
-//        Customer customer = customerService.findById(Long.valueOf(formatDataExel.format ((String) cellValues.get(2))));
-//        BigDecimal pricePerUnit = price.getPricePerUnit();
-//        PromoSign promoSign = checkPromoSign(actualSales, units, pricePerUnit);
 
         return Actual.builder()
                 .date(LocalDate.parse((String) cellValues.get(0)))
@@ -40,17 +34,6 @@ public class ExelToActualBuilder implements ExelToEntityBuilder<Actual> {
                 .price(Price.builder().priceId(priceId).build())
                 .units(units)
                 .actualSales(actualSales)
-//                .promoSign(PromoSign.PROMO)
                 .build();
     }
-
-//    private PromoSign checkPromoSign(BigDecimal actualSales,Long units, BigDecimal pricePerUnit) {
-//        double actual = actualSales.doubleValue();
-//        double price = pricePerUnit.doubleValue();
-//        if(actual/units<price) {
-//            return PromoSign.PROMO;
-//        } else {
-//            return PromoSign.REGULAR;
-//        }
-//    }
 }
